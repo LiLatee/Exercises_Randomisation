@@ -1,7 +1,7 @@
 from random import randrange
 import os
 
-# TODO: 1. Czy zrobione czy już było?
+# TODO: 1. Czy zrobione czy już było ?
 
 def get_range(range: list) -> int:
     try:
