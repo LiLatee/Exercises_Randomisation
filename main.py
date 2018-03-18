@@ -2,10 +2,12 @@ from random import randrange
 import os
 
 # TODO: 1. Czy zrobione czy już było ?
+# TODO: 2. FileNotFoundError
+# TODO: 3. Wyłączenie gdy otwieramy zakończony plik.
 
 def get_range(range: list) -> int:
     try:
-        number1, number2 = input('Podaj dwie liczby odzielone (TYLKO) przecinkiem (zakres zadań): ').split(' ')
+        number1, number2 = input('Podaj dwie liczby odzielone (TYLKO) spacją (zakres zadań): ').split(' ')
         randrange(int(number1), int(number2) + 1, 1) # Helps to check if numbers are int type. Otherwise ValueError occurs.
     except ValueError:
         return 1
@@ -18,6 +20,7 @@ def open_write(filename: str=None) -> str:
     if filename is None:
         filename = input('Podaj nazwe pliku do otwarcia: ')
     set_of_elements = set()
+
     with open(filename, 'r') as data:
         number1, number2 = data.readline().split(' ')
         # Removes square brackets
@@ -27,13 +30,16 @@ def open_write(filename: str=None) -> str:
 
     draw_number = randrange(int(number1), int(number2) + 1, 1)
 
-    while len(set_of_elements) != (int(number2) - int(number1) +1):
+    done_exercises = 0
+    while len(set_of_elements) != (int(number2) - int(number1) + 1):
         if draw_number not in set_of_elements:
             os.system('cls')
             print('Wylosowano: ', draw_number)
             set_of_elements.add(draw_number)
             print(set_of_elements)
-            print('Aktualnie zrobiono ', len(set_of_elements), ' zadań.')
+            print('Zadanie numer: ', len(set_of_elements), '/', (int(number2)-int(number1) + 1), '.')
+            done_exercises += 1
+            print('Aktualnie robione zadanie: ', done_exercises, '.')
             action = input('Wciśnij cokolwiek, aby wylosowac kolejną liczbę lub Q, aby zakończyć: ')
         draw_number = randrange(int(number1), int(number2) + 1, 1)
         if action.upper() == 'Q':
@@ -59,7 +65,7 @@ def create_write_file() -> str:
         pass
     number1 = range[0]
     number2 = range[1]
-    print(number1,'|',number2)
+
 
 
     # Checks if range starts with smaller number.
@@ -72,7 +78,7 @@ def create_write_file() -> str:
 
     # Saves range in a file.
     with open(name, 'w') as data:
-        print(number1, number2, file=data, end='')
+        print(number1, number2, file=data, end='\n')
 
     return open_write(name)
 
